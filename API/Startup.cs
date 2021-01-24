@@ -1,21 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using API.Extensions;
 using API.Helpers;
+using API.Middleware;
 using AutoMapper;
-using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 
 namespace API
 {
@@ -32,26 +24,49 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
+            // services.AddScoped<IProductRepository, ProductRepository>();
+            // services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
             services.AddAutoMapper(typeof(MappingProfiles));
             services.AddControllers();
             services.AddDbContext<StoreContext>(x => x.UseSqlite(_config.GetConnectionString("DefaultConnection")));
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
-            });
+            // services.AddSwaggerGen(c =>
+            // {
+            //     c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+            // });
+
+            // services.Configure<ApiBehaviorOptions>(options => 
+            // {
+            //     options.InvalidModelStateResponseFactory = actionContext => 
+            //     {
+            //         var errors = actionContext.ModelState.Where(e => e.Value.Errors.Count > 0)
+            //         .SelectMany(x => x.Value.Errors).Select(x => x.ErrorMessage).ToArray();
+
+            //         var errorResponse = new ApiValidationErrorResponse
+            //         {
+            //             Errors = errors
+            //         };
+            //         return new BadRequestObjectResult(errorResponse);
+            //     };
+            // });
+            services.AddApplicationServices();
+            // services.AddSwaggerGen(c => 
+            // {
+            //   c.SwaggerDoc("v1", new OpenApiInfo {Title = "YumSoap API", Version = "v1"});  
+            // });
+            services.AddSwaggerDocumentation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
-            }
+            // if (env.IsDevelopment())
+            // {
+            //     app.UseDeveloperExceptionPage();
+            //     app.UseSwagger();
+            //     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
+            // }
+            app.UseMiddleware<ExceptionMiddleware>();
+            app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
             app.UseHttpsRedirection();
 
@@ -59,6 +74,11 @@ namespace API
             app.UseStaticFiles();
 
             app.UseAuthorization();
+            app.UseSwaggerDocumentation();
+
+            // app.UseSwagger();
+            // // app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
+            // app.UseSwaggerUI(c => {c.SwaggerEndpoint("/swagger/v1/swagger.json", "YumSoap API v1");});
 
             app.UseEndpoints(endpoints =>
             {
