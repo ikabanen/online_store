@@ -9,7 +9,6 @@ import { CoreModule } from './core/core.module';
 import { HomeModule } from './home/home.module';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner'
-import { from } from 'rxjs';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptors';
 
 @NgModule({
@@ -22,7 +21,6 @@ import { LoadingInterceptor } from './core/interceptors/loading.interceptors';
     BrowserAnimationsModule,
     HttpClientModule,
     CoreModule,
-    // ShopModule,
     HomeModule,
     NgxSpinnerModule
   ],
