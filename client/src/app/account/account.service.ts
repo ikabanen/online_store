@@ -1,11 +1,11 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { BehaviorSubject, of, ReplaySubject } from 'rxjs';
-import { map, throwIfEmpty } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { IAddress } from '../shared/models/address';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, ReplaySubject, of } from 'rxjs';
 import { IUser } from '../shared/models/user';
+import { map, take } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { IAddress } from '../shared/models/address';
 
 @Injectable({
   providedIn: 'root'
@@ -17,10 +17,6 @@ export class AccountService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  // getCurrentUserValue() {
-  //   return this.currentUserSource.value;
-  // }
-
   loadCurrentUser(token: string) {
     if (token === null) {
       this.currentUserSource.next(null);
@@ -29,6 +25,7 @@ export class AccountService {
 
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', `Bearer ${token}`);
+
     return this.http.get(this.baseUrl + 'account', {headers}).pipe(
       map((user: IUser) => {
         if (user) {
@@ -36,7 +33,7 @@ export class AccountService {
           this.currentUserSource.next(user);
         }
       })
-    )
+    );
   }
 
   login(values: any) {
@@ -78,5 +75,4 @@ export class AccountService {
   updateUserAddress(address: IAddress) {
     return this.http.put<IAddress>(this.baseUrl + 'account/address', address);
   }
-
 }
