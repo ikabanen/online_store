@@ -15,7 +15,7 @@ namespace API.Controllers
 
         [HttpGet("testauth")]
         [Authorize]
-        public ActionResult<string> GetSecretText()
+        public ActionResult<string> GetSecretText() 
         {
             return "secret stuff";
         }
@@ -24,12 +24,10 @@ namespace API.Controllers
         public ActionResult GetNotFoundRequest()
         {
             var thing = _context.Products.Find(42);
-
-            if (thing == null) 
+            if (thing == null)
             {
                 return NotFound(new ApiResponse(404));
             }
-
             return Ok();
         }
 
@@ -37,9 +35,7 @@ namespace API.Controllers
         public ActionResult GetServerError()
         {
             var thing = _context.Products.Find(42);
-
             var thingToReturn = thing.ToString();
-
             return Ok();
         }
 
@@ -50,7 +46,7 @@ namespace API.Controllers
         }
 
         [HttpGet("badrequest/{id}")]
-        public ActionResult GetNotFoundRequest(int id)
+        public ActionResult GetNotFoundResult(int id)
         {
             return Ok();
         }

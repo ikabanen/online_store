@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, Self } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, Self, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 @Component({
@@ -7,13 +7,13 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
   styleUrls: ['./text-input.component.scss']
 })
 export class TextInputComponent implements OnInit, ControlValueAccessor {
-  @ViewChild('input', { static: true }) input: ElementRef;
+  @ViewChild('input', {static: true}) input: ElementRef;
   @Input() type = 'text';
   @Input() label: string;
 
   constructor(@Self() public controlDir: NgControl) {
     this.controlDir.valueAccessor = this;
-  }
+   }
 
   ngOnInit() {
     const control = this.controlDir.control;
@@ -25,9 +25,9 @@ export class TextInputComponent implements OnInit, ControlValueAccessor {
     control.updateValueAndValidity();
   }
 
-  onChange(event) { }
+  onChange(event) {}
 
-  onTouched() { }
+  onTouched() {}
 
   writeValue(obj: any): void {
     this.input.nativeElement.value = obj || '';
@@ -36,9 +36,12 @@ export class TextInputComponent implements OnInit, ControlValueAccessor {
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
-
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
   }
 
+  // setDisabledState?(isDisabled: boolean): void {
+  //   throw new Error('Method not implemented.');
+  // }
+  
 }
