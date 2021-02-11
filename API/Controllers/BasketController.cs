@@ -15,20 +15,23 @@ namespace API.Controllers
         {
             _mapper = mapper;
             _basketRepository = basketRepository;
-
         }
+
         [HttpGet]
         public async Task<ActionResult<CustomerBasket>> GetBasketById(string id)
         {
             var basket = await _basketRepository.GetBasketAsync(id);
+
             return Ok(basket ?? new CustomerBasket(id));
         }
 
         [HttpPost]
         public async Task<ActionResult<CustomerBasket>> UpdateBasket(CustomerBasketDto basket)
         {
-            var CustomerBasket = _mapper.Map<CustomerBasketDto, CustomerBasket>(basket);
-            var updatedBasket = await _basketRepository.UpdateBasketAsync(CustomerBasket);
+            var customerBasket = _mapper.Map<CustomerBasketDto, CustomerBasket>(basket);
+
+            var updatedBasket = await _basketRepository.UpdateBasketAsync(customerBasket);
+
             return Ok(updatedBasket);
         }
 
