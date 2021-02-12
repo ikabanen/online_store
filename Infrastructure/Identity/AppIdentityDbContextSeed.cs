@@ -13,12 +13,12 @@ namespace Infrastructure.Identity
             {
                 var user = new AppUser 
                 {
-                    DisplayName = "Lily",
-                    Email = "lily@test.com",
-                    UserName = "lily@test.com",
+                    DisplayName = "managerIK",
+                    Email = "flysensee@gmail.com",
+                    UserName = "flysensee@gmail.com",
                     Address = new Address 
                     {
-                        FirstName = "Lily",
+                        FirstName = "Admin",
                         LastName = "Testing",
                         Street = "3 Test City",
                         City = "New York",
@@ -27,7 +27,7 @@ namespace Infrastructure.Identity
                     }
                 };
 
-                await userManager.CreateAsync(user, "Pa$$w0rd");
+                await userManager.CreateAsync(user, "IKLaceyOly21$$");
             }
         }
     }
